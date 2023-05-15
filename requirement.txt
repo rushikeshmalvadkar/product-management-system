@@ -1,0 +1,132 @@
+================================ Hardik test requirement - Design Document ==============================
+- Create a new product
+- Retrive a single product by id
+- Retrive list of all product
+- Update product by id
+- Delete product by id
+
+
+* NOUNS
+- product
+
+* VERBS
+- createProduct()
+- getProductById()
+- getAllProducts()
+- updateProduct()
+- deleteProductById()
+
+* Database design
+
+product
+- ID : INT
+- NAME : VARCHAR(50)
+- DESCRIPTION VARCHAR(200)
+- PRICE : DECIMAL(10,2)
+- ACTIVE_STATUS : VARCHAR(20)
+- CREATED_DATE_TIME : DATETIME
+- UPDATED_DATE_TIME : DATETIME
+
+* Entity classes
+
+* ProductEntity.java
+
+ProductEntity(in.test.pms.entity)
+- id : Integer
+- name : String
+- description : String
+- price : BigDecimal
+- activeStatus : StatusEnum
+- createdDateTime : LocalDateTime
+- updatedDateTime : LocalDateTime
+
+* Enum classes
+
+StatusEnum(in.test.pms.enums)
+- ACTIVE
+- IN_ACTIVE
+
+* DTO classes
+
+CreateProductRequest(in.test.pms.dto.request)
+- productName : String
+- productDescription : String
+- productPrice : BigDecimal
+
+UpdateProductRequest(in.test.pms.dto.request)
+- productId : Integer
+- productName : String
+- productDescription : String
+- productPrice : String
+
+ProductPageRequest(in.test.pms.dto.request)
+- pageNumber : Integer (Default value = 0)
+- pageSize : Integer (Default value = 5)
+
+ProductResponse(in.test.pms.dto.response)
+- productId : Integer
+- productName : String
+- productDescription : String
+- productPrice : BigDecimal
+- productStatus : StatusEnum
+- productCreatedDateTime : LocalDateTime
+- productUpdatedDateTime : LocalDateTime
+
+ApiResponse<T>(in.test.pms.dto.response)
+- data : T
+- status : Integer
+- errorMessages : List<String>
+
+ProductPagedResponse(in.test.pms.dto.response)
+- productList : List<ProductResponse>
+- totalRecords : long
+- isFirstPage : boolean
+- isLastPage : boolean
+- hasPrevious : boolean
+- hasNext : boolean
+
+* Exception classes
+- ProductNotFoundException.java(in.test.pms.exception)
+
+* Global exception handler class
+- GlobalExcpetionHandler.java(in.test.pms.exception.handler)
+
+* Controller classes
+
+ProductRestController(in.test.pms.controller.rest)
+- public ApiResponse<ProductResponse> createProduct(CreateProductRequest createProductRequest);
+- public ApiResponse<ProductResponse> updateProduct(UpdateProductRequest updateProductRequest)
+- public ApiResponse<Boolean> deleteProduct(Integer productId);
+- public ApiResponse<ProductResponse> getProductById(Integer productId);
+- public ApiResponse<ProductPagedResponse> getPagedProductList(ProductPageRequest productPageRequest);
+
+
+* Service classes
+
+ProductService(in.test.pms.service)
+- public ProductResponse createProduct(CreateProductRequest createProductRequest);
+- public ProductResponse updateProduct(UpdateProductRequest updateProductRequest)
+- public void deleteProduct(Integer productId);
+- public ProductResponse getProductById(Integer productId);
+- public ProductPagedResponse getPagedProductList(ProductPageRequest productPageRequest);
+
+* Repository interfaces
+
+ProductRepository.java(in.test.pms.repository)
+
+* Mapper classes
+
+ProductMapper(in.test.pms.mapper)
+- public ProductEntity toEntity(CreateProductRequest dto);
+- public ProductEntity toEntity(UpdateProductRequest dto);
+- public ProductResponse toDto(ProductEntity entity);
+- public List<ProductResponse> toDtoList(List<ProductEntity> entities);
+
+======================================= Design Document - Completed ===========================
+
+
+
+
+
+
+
