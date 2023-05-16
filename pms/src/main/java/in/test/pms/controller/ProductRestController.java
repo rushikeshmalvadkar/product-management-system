@@ -40,7 +40,7 @@ public class ProductRestController {
 		ProductResponse savedProduct = this.productService.createProduct(createProductRequest);
 		log.info("Product create sucessfully with id {}", savedProduct.getProductId());
 		log.debug("createProduct() >>>>>>>>");
-		return new ApiResponse<>(savedProduct, HttpStatus.OK.value());
+		return new ApiResponse<>(savedProduct, HttpStatus.CREATED.value());
 	}
 
 	@GetMapping("/products/{id}")
