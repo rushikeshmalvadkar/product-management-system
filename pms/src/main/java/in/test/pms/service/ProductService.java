@@ -39,28 +39,26 @@ public class ProductService {
 		log.debug("<<<<<<<<< createProduct() ");
 		ProductEntity productEntity = this.productMapper.toEntity(createProductRequest);
 		ProductEntity savedEntity = this.productRepository.save(productEntity);
-		log.debug("createProduct >>>>>>>>");
-		
+		log.debug("createProduct() >>>>>>>>");
+
 		return this.productMapper.toDto(savedEntity);
 	}
 
 	public ProductResponse fetchProductById(Integer productId) {
 		log.debug("<<<<<<<<< fetchProductById()");
 		ProductEntity productEntity = getProductEntityById(productId);
-		log.info("fetch product by id {}",productEntity);
-		log.debug("fetchProductById()>>>>>>>>>");
+		log.debug("fetchProductById() >>>>>>>>>");
 		return this.productMapper.toDto(productEntity);
-
 	}
 
 	private ProductEntity getProductEntityById(Integer productId) {
 		log.debug("<<<<<<<<< getProductEntityById()");
 		Optional<ProductEntity> product = this.productRepository.findById(productId);
 		if (product.isPresent()) {
-			log.debug("getProductEntityById()>>>>");
+			log.debug("getProductEntityById() >>>>>>>");
 			return product.get();
 		} else {
-			throw new ProductNotFoundException("Product Not Found For This Id : " + productId);
+			throw new ProductNotFoundException(String.format("product does not exists with id : %s", productId));
 		}
 	}
 
@@ -69,7 +67,6 @@ public class ProductService {
 		ProductEntity productEntity = getProductEntityById(id);
 		productEntity.setStatus(StatusEnum.IN_ACTIVE);
 		this.productRepository.save(productEntity);
-		log.info("product is deleted for this id : "+ id);
 		log.debug("deleteProduct() >>>>>>>>>");
 	}
 
@@ -79,17 +76,17 @@ public class ProductService {
 		Sort sort = Sort.by(Direction.DESC, DEFAULT_SORT_BY);
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-		// To add where condition 
+		// To add where condition
 		ProductEntity productEntity = new ProductEntity();
 		productEntity.setStatus(StatusEnum.ACTIVE);
 
 		Example<ProductEntity> productEntityExample = Example.of(productEntity);
 		Page<ProductEntity> productPage = this.productRepository.findAll(productEntityExample, pageable);
-		return getProductPagedResponse(productPage);
+		return prepareProductPagedResponse(productPage);
 
 	}
 
-	private ProductPagedResponse getProductPagedResponse(Page<ProductEntity> productPage) {
+	private ProductPagedResponse prepareProductPagedResponse(Page<ProductEntity> productPage) {
 		List<ProductEntity> entities = productPage.getContent();
 		List<ProductResponse> dtoList = this.productMapper.toDtoList(entities);
 		ProductPagedResponse productPagedResponse = new ProductPagedResponse();
@@ -99,7 +96,7 @@ public class ProductService {
 		productPagedResponse.setHasPrevious(productPage.hasPrevious());
 		productPagedResponse.setLastPage(productPage.isLast());
 		productPagedResponse.setTotalRecords(productPage.getTotalElements());
-        
+
 		return productPagedResponse;
 	}
 
@@ -112,9 +109,9 @@ public class ProductService {
 		dbProductData.setPrice(updateProductRequest.getProductPrice());
 
 		ProductEntity updatedProductEntity = this.productRepository.save(dbProductData);
-		
+
 		log.debug("updateProduct>>>>>>>>");
-          	return this.productMapper.toDto(updatedProductEntity);
+		return this.productMapper.toDto(updatedProductEntity);
 	}
 
 }

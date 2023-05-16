@@ -38,9 +38,9 @@ public class ProductRestController {
 	public ApiResponse<ProductResponse> createProduct(@Valid @RequestBody CreateProductRequest createProductRequest) {
 		log.debug("<<<<<<<<< createProduct()");
 		ProductResponse savedProduct = this.productService.createProduct(createProductRequest);
-		log.info("Product create sucessfully with id {}" , savedProduct.getProductId());
+		log.info("Product create sucessfully with id {}", savedProduct.getProductId());
 		log.debug("createProduct() >>>>>>>>");
-		return new ApiResponse(savedProduct, HttpStatus.OK.value());
+		return new ApiResponse<>(savedProduct, HttpStatus.OK.value());
 	}
 
 	@GetMapping("/products/{id}")
@@ -48,14 +48,14 @@ public class ProductRestController {
 			@PathVariable("id") @Positive(message = "product id should be greter then zero") Integer productId) {
 		log.debug("<<<<<<<<< getProductById ");
 		ProductResponse product = this.productService.fetchProductById(productId);
-		log.info("Get Product by id {}",product);
 		log.debug("getProductById >>>>>>>>");
-		
-		return new ApiResponse<ProductResponse>(product, HttpStatus.OK.value());
+
+		return new ApiResponse<>(product, HttpStatus.OK.value());
 	}
 
 	@DeleteMapping("/products/{id}")
-	public ApiResponse<Boolean> deleteProductById(@PathVariable("id") @Positive(message = "product id should be greter then zero") Integer id) {
+	public ApiResponse<Boolean> deleteProductById(
+			@PathVariable("id") @Positive(message = "product id should be greter then zero") Integer id) {
 		log.debug("<<<<<<<<< deleteProductById()");
 		this.productService.deleteProduct(id);
 		log.debug("deleteProductById>>>>>>>>");
@@ -66,8 +66,7 @@ public class ProductRestController {
 	public ApiResponse<ProductResponse> updateProduct(@Valid @RequestBody UpdateProductRequest updateProductRequest) {
 		log.debug("<<<<<<<<< updateProduct()");
 		ProductResponse updatedProduct = this.productService.updateProduct(updateProductRequest);
-        log.info("updated product {}",updatedProduct);
-        log.debug("updateProduct() >>>>>>>>");
+		log.debug("updateProduct() >>>>>>>>");
 		return new ApiResponse<>(updatedProduct, HttpStatus.OK.value());
 	}
 
@@ -75,7 +74,7 @@ public class ProductRestController {
 	public ApiResponse<ProductPagedResponse> getAllProduct(@Valid @RequestBody ProductPageRequest productPageRequest) {
 		log.debug("<<<<<<<<< getAllProduct()");
 		ProductPagedResponse pagedProductList = this.productService.getPagedProductList(productPageRequest);
-		log.debug("getAllProduct >>>>>>>>>");
+		log.debug("getAllProduct() >>>>>>>>>");
 		return new ApiResponse<>(pagedProductList, HttpStatus.OK.value());
 	}
 
