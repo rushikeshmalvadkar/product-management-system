@@ -37,11 +37,18 @@ public class ProductService {
 
 	public ProductResponse createProduct(CreateProductRequest createProductRequest) {
 		log.debug("<<<<<<<<< createProduct() ");
+		checkProductForNull(createProductRequest);
 		ProductEntity productEntity = this.productMapper.toEntity(createProductRequest);
 		ProductEntity savedEntity = this.productRepository.save(productEntity);
 		log.debug("createProduct() >>>>>>>>");
-
+ 
 		return this.productMapper.toDto(savedEntity);
+	}
+
+	private void checkProductForNull(CreateProductRequest createProductRequest) {
+		if(createProductRequest==null) {
+			throw new NullPointerException("product object should not be null");
+		}
 	}
 
 	public ProductResponse fetchProductById(Integer productId) {

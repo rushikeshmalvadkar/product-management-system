@@ -50,8 +50,7 @@ public class GlobalExcpetionHandler {
 			errors.add(ex.getMessage());
 		}
 		
-		if (ex instanceof MethodArgumentTypeMismatchException) {
-			MethodArgumentTypeMismatchException methodArgumentMismatchEX = (MethodArgumentTypeMismatchException) ex;
+		if (ex instanceof MethodArgumentTypeMismatchException methodArgumentMismatchEX) {
 			String name = methodArgumentMismatchEX .getName();
 			errors.add("Incorrect data type value for " + name);
 		}

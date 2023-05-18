@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import in.test.pms.dto.request.CreateProductRequest;
-import in.test.pms.dto.request.UpdateProductRequest;
 import in.test.pms.dto.response.ProductResponse;
 import in.test.pms.entity.ProductEntity;
 
@@ -14,11 +13,14 @@ import in.test.pms.entity.ProductEntity;
 public class ProductMapper {
 
 	public ProductEntity toEntity(CreateProductRequest dto) {
+		
 		ProductEntity productEntity = new ProductEntity();
 		productEntity.setName(dto.getProductName());
 		productEntity.setDescription(dto.getProductDescription());
 		productEntity.setPrice(dto.getProductPrice());
 		return productEntity;
+		
+		
 	}
 
 	public ProductResponse toDto(ProductEntity productEntity) {
