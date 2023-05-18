@@ -1,5 +1,6 @@
 package in.test.pms.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -55,7 +56,18 @@ class ProductServiceTest {
 		
 	}
 	
-	
+	@Test
+    void	fetchProductByIdWithoutNull(){
+		ProductRepository productRepoMock = Mockito.mock(ProductRepository.class);
+		ProductMapper productMapper = new ProductMapper();
+		ProductEntity productEntity = new ProductEntity();
+		productEntity.setId(1);
+		productEntity.setName("mobile");
+		Mockito.when(productRepoMock.findById(1)).thenReturn(Optional.ofNullable(productEntity));
+		ProductService productService = new ProductService(productMapper, productRepoMock);
+		ProductResponse productResponce = productService.fetchProductById(1);
+		assertThat(productResponce.getProductId()).isEqualTo(1);
+	}
 	
 	
 	
